@@ -24,6 +24,14 @@ jobs:
 
       - run: npx jest --coverage
 
+      - run: ls coverage
+
+      - name: Coverage Diff
+        uses: greatwizard/coverage-diff-action@v1.0.8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          coverage-filename: coverage/coverage-final.json
+
       - uses: actions/upload-artifact@v3
         with:
           name: "report"

@@ -1,5 +1,5 @@
 process.env.TZ = "UTC";
 
 module.exports = {
-  coverageReporters: ["json-summary", "text", "lcov"],
+  coverageReporters: ["json", "json-summary", "text", "lcov"],
 };

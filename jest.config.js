@@ -15,6 +15,7 @@ module.exports = {
   //   "\\.(css|less|scss)$": "identity-obj-proxy",
   // },
   // coverageDirectory: "jest-coverage",
+  coverageReporters: ["json-summary", "text", "lcov"],
   // collectCoverageFrom: [
   //   "./actions/**/*.ts",
   //   "./api/**/*.ts",

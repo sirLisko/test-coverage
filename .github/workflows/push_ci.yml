@@ -24,13 +24,13 @@ jobs:
 
       - run: npx jest --coverage
 
-      - run: ls coverage
+      # - run: ls coverage
 
       - name: Coverage Diff
-        uses: sirlisko/coverage-diff-action@v1.0.8
+        uses: ./.github/actions/diff
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-filename: coverage/coverage-final.json
+          # coverage-filename: coverage/coverage-final.json
 
       - uses: actions/upload-artifact@v3
         with:

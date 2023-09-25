@@ -39,3 +39,5 @@ cypress/videos
 coverage
 cypress-coverage
 jest-coverage
+
+# .github/actions/diff/node_modules

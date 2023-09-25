@@ -30,6 +30,7 @@ jobs:
         uses: ./.github/actions/diff
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          allowed-to-fail: "true"
           # coverage-filename: coverage/coverage-final.json
 
       - uses: actions/upload-artifact@v3

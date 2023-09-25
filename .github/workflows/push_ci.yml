@@ -24,14 +24,6 @@ jobs:
 
       - run: npx jest --coverage
 
-      # - run: ls coverage
-
-      - name: Coverage Diff
-        uses: ./.github/actions/diff
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          # coverage-filename: coverage/coverage-final.json
-
       - uses: actions/upload-artifact@v3
         with:
           name: "report"
@@ -57,40 +49,45 @@ jobs:
 
       - name: Cypress run
         run: npm run integration
-      # - run: |
-      #     mv coverage/coverage-final.json coverage/coverage.${{ matrix.containers }}.json
+
       # - uses: actions/upload-artifact@v3
       #   with:
       #     name: "report"
-      #     path: "coverage/coverage.${{ matrix.containers }}.json"
+      #     path: "coverage/coverage-final.json"
+      - run: |
+          mv cypress-coverage/coverage-final.json cypress-coverage/coverage.e2e.json
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "report"
+          path: "cypress-coverage/coverage.e2e.json"
 
-  # coverage:
-  #   name: Coverage
-  #   runs-on: ubuntu-latest
-  #   needs: [unit]
-  #   steps:
-  #     - uses: actions/checkout@v3
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    needs: [unit, e2e]
+    steps:
+      - uses: actions/checkout@v3
 
-  #     - name: Download and move artifacts
-  #       uses: actions/download-artifact@v2
-  #     - run: |
-  #         mkdir .nyc_output
-  #         npx nyc merge report
-  #         mv coverage.json .nyc_output/out.json
-  #         ls .nyc_output
-  #         ls report
-  #         # npx nyc report --reporter lcov --reporter text --report-dir coverage --exclude-after-remap false
+      - name: Download and move artifacts
+        uses: actions/download-artifact@v2
 
-  #     - uses: artiomtr/jest-coverage-report-action@v2.0-rc.6
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
-  #         threshold: 74
-  #         skip-step: all
-  #         coverage-file: ".nyc_output/out.json"
-  #         base-coverage-file: "report/coverage-final.json"
-  #         annotations: coverage
+      - run: ls
 
-  #     - uses: actions/upload-artifact@v3
-  #       with:
-  #         name: "coverage"
-  #         path: "coverage"
+      - run: |
+          mkdir .nyc_output
+          npx nyc merge report
+          mv coverage.json .nyc_output/out.json
+          ls .nyc_output
+          ls report
+          npx nyc report --reporter lcov --reporter text --reporter json-summary --report-dir coverage --exclude-after-remap false
+
+      - name: Coverage Diff
+        uses: ./.github/actions/diff
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          allowed-to-fail: "true"
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: "coverage"
+          path: "coverage"

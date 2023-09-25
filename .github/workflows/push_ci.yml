@@ -27,7 +27,7 @@ jobs:
       - run: ls coverage
 
       - name: Coverage Diff
-        uses: greatwizard/coverage-diff-action@v1.0.8
+        uses: sirlisko/coverage-diff-action@v1.0.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           coverage-filename: coverage/coverage-final.json
